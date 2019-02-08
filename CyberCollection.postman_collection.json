@@ -1,0 +1,229 @@
+{
+	"info": {
+		"_postman_id": "c3bfbd74-787f-4193-a3c6-88361b7b21cf",
+		"name": "CyberCollection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Send POST request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "65c1d158-2a21-4bac-8851-3003d93eb863",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);",
+							"});",
+							"",
+							"var jsonData=pm.response.json();",
+							"pm.test(\"Validation of First and Last Name\", function(){",
+							"    pm.expect(jsonData.firstName).to.eql(\"Farid\");",
+							"    pm.expect(jsonData.lastName).to.eql(\"Kamilovich\")",
+							"    pm.expect(jsonData.company.title).to.eql(\"Prezidente\")",
+							"})",
+							"",
+							"var schema={",
+							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",",
+							"  \"type\": \"object\",",
+							"  \"properties\": {",
+							"    \"id\": {",
+							"      \"type\": \"integer\"",
+							"    },",
+							"    \"firstName\": {",
+							"      \"type\": \"string\"",
+							"    },",
+							"    \"lastName\": {",
+							"      \"type\": \"string\"",
+							"    },",
+							"    \"batch\": {",
+							"      \"type\": \"integer\"",
+							"    },",
+							"    \"contact\": {",
+							"      \"type\": \"object\",",
+							"      \"properties\": {",
+							"        \"contactId\": {",
+							"          \"type\": \"integer\"",
+							"        },",
+							"        \"phone\": {",
+							"          \"type\": \"string\"",
+							"        },",
+							"        \"emailAddress\": {",
+							"          \"type\": \"string\"",
+							"        }",
+							"      },",
+							"      \"required\": [",
+							"        \"contactId\",",
+							"        \"phone\",",
+							"        \"emailAddress\"",
+							"      ]",
+							"    },",
+							"    \"company\": {",
+							"      \"type\": \"object\",",
+							"      \"properties\": {",
+							"        \"companyId\": {",
+							"          \"type\": \"integer\"",
+							"        },",
+							"        \"companyName\": {",
+							"          \"type\": \"string\"",
+							"        },",
+							"        \"title\": {",
+							"          \"type\": \"string\"",
+							"        },",
+							"        \"startDate\": {",
+							"          \"type\": \"string\"",
+							"        },",
+							"        \"address\": {",
+							"          \"type\": \"object\",",
+							"          \"properties\": {",
+							"            \"addressId\": {",
+							"              \"type\": \"integer\"",
+							"            },",
+							"            \"street\": {",
+							"              \"type\": \"string\"",
+							"            },",
+							"            \"city\": {",
+							"              \"type\": \"string\"",
+							"            },",
+							"            \"state\": {",
+							"              \"type\": \"string\"",
+							"            },",
+							"            \"zipCode\": {",
+							"              \"type\": \"integer\"",
+							"            }",
+							"          },",
+							"          \"required\": [",
+							"            \"addressId\",",
+							"            \"street\",",
+							"            \"city\",",
+							"            \"state\",",
+							"            \"zipCode\"",
+							"          ]",
+							"        }",
+							"      },",
+							"      \"required\": [",
+							"        \"companyId\",",
+							"        \"companyName\",",
+							"        \"title\",",
+							"        \"startDate\",",
+							"        \"address\"",
+							"      ]",
+							"    }",
+							"  },",
+							"  \"required\": [",
+							"    \"id\",",
+							"    \"firstName\",",
+							"    \"lastName\",",
+							"    \"batch\",",
+							"    \"contact\",",
+							"    \"company\"",
+							"  ]",
+							"}",
+							"",
+							"var response=JSON.parse(responseBody);",
+							"tests[\"Schema is Valid\"]=tv4.validate(response, schema);",
+							"console.log(tv4.error);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"batch\": 10,\n    \"company\": {\n        \"address\": {\n            \"city\": \"BAKU\",\n            \"state\": \"none\",\n            \"street\": \"homeless\",\n            \"zipCode\": 0\n        },\n        \"companyName\": \"mine\",\n        \"startDate\": \"a long time ago\",\n        \"title\": \"Prezidente\"\n    },\n    \"contact\": {\n        \"emailAddress\": \"KamilZiGReat@KamilZiGreat.com\",\n        \"phone\": \"555007007007\"\n    },\n    \"firstName\": \"Farid\",\n    \"id\": 0,\n    \"lastName\": \"Kamilovich\"\n}"
+				},
+				"url": {
+					"raw": "{{url}}/student/create",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"student",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Send GET Request all students",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d1f29f72-ec5c-4d0c-8aba-967532ec2763",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var jsonData=pm.response.json();",
+							"pm.test(\"Validation of First and Last Name\", function(){",
+							"    pm.expect(jsonData.students[0].firstName).to.eql(\"Game\");",
+							"    pm.expect(jsonData.students[0].lastName).to.eql(\"unknown\")",
+							"    pm.expect(jsonData.students[0].contact.emailAddress).to.eql(\"sdhsahdtring@gmail.com\")",
+							"})",
+							"pm.globals.set(\"studentId\", jsonData.students[0].id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{url}}/student/all",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"student",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Send GET Request all students Copy",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{url}}/student/all",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"student",
+						"all"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
